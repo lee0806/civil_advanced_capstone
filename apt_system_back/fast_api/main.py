@@ -1,0 +1,75 @@
+import random, json
+from datetime import datetime
+from fastapi import FastAPI, Request, Depends
+from sqlalchemy.orm import Session
+from database import SessionLocal, SensorData # DB 모듈 가져오기
+
+
+
+app = FastAPI()
+
+# DB 세션 가져오기
+def get_db() :
+    db = SessionLocal()
+    try :
+        yield db
+    finally :
+        db.close()
+
+
+def convert_time(nanoseconds: int) -> str:
+    """
+    나노초 단위의 Unix 타임스탬프를 YYYY-MM-DD HH:MM:SS 형식으로 변환
+    """
+    seconds = nanoseconds /1e9
+    dt = datetime.utcfromtimestamp(seconds)
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
+
+@app.post("/data")
+async def receive_sensor_data(request : Request, db : Session = Depends(get_db)):
+    """
+    Sensor Logger에서 전송된 JSON 데이터를 수신하는 엔드포인트.
+    - POST 요청을 처리하고 데이터를 콘솔에 출력한 후 JSON 응답을 반환함.
+    """
+    data = await request.json()
+
+    # "payload" 리스트에서 하나만 랜덤하게 선택
+    if "payload" in data and isinstance(data["payload"], list) and len(data["payload"]) > 0:
+        selected_data = random.choice(data["payload"])  # 리스트에서 랜덤하게 하나 선택
+        
+        if "time" in selected_data:
+            formatted_time = convert_time(selected_data["time"])
+            del selected_data["time"]
+            selected_data = {
+                "name" : selected_data["name"],
+                "time" : formatted_time,
+                "values" : selected_data["values"]
+            }
+
+        print(f"📡 Selected Data Saved: {selected_data}")  # 선택된 데이터만 출력
+
+        db_entry = SensorData(
+            name = selected_data["name"],
+            time = formatted_time,
+            x = selected_data["values"]["x"],
+            y = selected_data["values"]["y"],
+            z = selected_data["values"]["z"]
+        )
+        db.add(db_entry)
+        db.commit()
+
+        return {"message": "Single data entry processed", "data": selected_data}
+
+    
+    
+
+# 기본 확인용 페이지
+@app.get("/")
+def home():
+    """
+    기본 API 확인용 엔드포인트.
+    - FastAPI 서버가 정상적으로 실행되고 있는지 확인할 수 있음.
+    """
+    return {"message": "FastAPI Server is running!"}
