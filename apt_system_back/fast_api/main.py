@@ -3,10 +3,19 @@ from datetime import datetime
 from fastapi import FastAPI, Request, Depends
 from sqlalchemy.orm import Session
 from database import SessionLocal, SensorData # DB 모듈 가져오기
-
+from fastapi.middleware.cors import CORESMiddleware
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # DB 세션 가져오기
 def get_db() :
