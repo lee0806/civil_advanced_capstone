@@ -66,10 +66,23 @@ async def receive_sensor_data(request : Request, db : Session = Depends(get_db))
     
 
 # 기본 확인용 페이지
-@app.get("/")
-def home():
+@app.get("/data")
+def get_sensor_data(db: Session = Depends(get_db)):
     """
-    기본 API 확인용 엔드포인트.
-    - FastAPI 서버가 정상적으로 실행되고 있는지 확인할 수 있음.
+    MySQL에서 센서 데이터를 가져와 JSON 형식으로 변환하는 엔드 포인트
     """
-    return {"message": "FastAPI Server is running!"}
+    data = db.query(SensorData).all()
+
+    result = [
+        {
+            "id" : item.id,
+            "name" : item.name,
+            "time" : item.time,
+            "x" : item.x,
+            "y" : item.y,
+            "z" : item.z
+        }
+        for item in data
+    ]
+
+    return {"sensor_data": result}
