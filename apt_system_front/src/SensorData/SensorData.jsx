@@ -16,7 +16,7 @@ const SensorData = () => {
     // store에서 센서 데이터 변수(sensorData)와 데이터를 가져오는 함수(fetchData)를 가져옴
     const { sensorData, fetchData } = useSensorStore();
 
-    const { dummySensorData, setDummySensorData } = useState([]);
+    const [ dummySensorData, setDummySensorData ] = useState([]);
 
     useEffect(() => {
         // 센서에서 받은 데이터를 SensorStore에 저장
@@ -37,7 +37,7 @@ const SensorData = () => {
             {dummySensorData.length == 0 ? (
                 <p>⏳ 데이터 로딩 중 ...</p>
             ) : (
-                {/* 센서 데이터를 표 형식으로 표시 */}
+                // 센서 데이터를 표 형식으로 표시
                 <table border="1">
                     <thead>
                         <tr>
@@ -51,7 +51,7 @@ const SensorData = () => {
                     </thead>
                     <tbody>
                         {/* sensorData 배열을 반복하여 데이터를 표에 출력 */}
-                        {sensorData.map((data) => (
+                        {dummySensorData.map((data) => (
                             <tr key={data.id}>
                                 <td>{data.id}</td>
                                 <td>{data.name}</td>
