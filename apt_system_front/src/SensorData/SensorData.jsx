@@ -5,36 +5,26 @@ import React, { useState, useEffect } from "react";
 import useSensorStore from "../store/store";
 
 
-const dummyData = [
-    { id: 1, name: "Gravity", time: "2025-03-11 04:01:45", x: -0.214, y: -7.329, z: -6.511 },
-    { id: 2, name: "Gyroscope", time: "2025-03-11 04:02:10", x: 0.324, y: 1.523, z: -2.118 },
-    { id: 3, name: "Accelerometer", time: "2025-03-11 04:03:20", x: -0.984, y: 3.246, z: 7.415 }
-]
 
 const SensorData = () => {
 
     // store에서 센서 데이터 변수(sensorData)와 데이터를 가져오는 함수(fetchData)를 가져옴
     const { sensorData, fetchData } = useSensorStore();
 
-    const [ dummySensorData, setDummySensorData ] = useState([]);
-
     useEffect(() => {
-        // 센서에서 받은 데이터를 SensorStore에 저장
-        //fetchData();
-
-        setTimeout(() => {
-            setDummySensorData(dummyData);
-        }, 1000);
-        
-
+        //센서에서 받은 데이터를 SensorStore에 저장
+        fetchData();
     }, []);
+
+    console.log("sensorData 확인 : ", sensorData);
+
 
     return(
         <>
             <h2>📡 센서 데이터 (테스트 작업)</h2>
             
             {/* 데이터가 없는 경우 "로딩 중" 메시지 표시 */}
-            {dummySensorData.length == 0 ? (
+            {sensorData.length == 0 ? (
                 <p>⏳ 데이터 로딩 중 ...</p>
             ) : (
                 // 센서 데이터를 표 형식으로 표시
@@ -51,7 +41,7 @@ const SensorData = () => {
                     </thead>
                     <tbody>
                         {/* sensorData 배열을 반복하여 데이터를 표에 출력 */}
-                        {dummySensorData.map((data) => (
+                        {sensorData.map((data) => (
                             <tr key={data.id}>
                                 <td>{data.id}</td>
                                 <td>{data.name}</td>
