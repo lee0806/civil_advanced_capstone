@@ -1,5 +1,5 @@
 // React에서 컴포넌트가 실행될 때 특정 작업을 수행하도록 하는 useEffect를 가져옴
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 // Zustand에서 만든 변수관리 스토어를 가져옴
 import useSensorStore from "../store/store";
