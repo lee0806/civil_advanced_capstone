@@ -13,11 +13,19 @@ const useSensorStore = create((set) => ({
             // FastAPI의 'GET /data' API 호출 (센서 데이터 가져오는 과정)
             const response = await fetch("http://localhost:8000/data");
             
+            if (!response.ok) {
+                throw new Error("데이터 가져오기 실패");
+            }
+
+
             // 응답을 JSON 형식으로 변환
-            const result = await response.json();
+            const data = await response.json();
             
+            console.log("store에서 받는 db 데이터 값 : ", data);
+
+
             // 가져온 데이터를 sensorData 변수에 저장
-            set({ sensorData: result.sensorData });
+            set({ sensorData: data.sensor_data || data });
 
         } catch (error) {
             console.log("❌ 데이터 가져오기 실패:", error);
