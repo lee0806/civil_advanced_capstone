@@ -1,0 +1,18 @@
+.banner {
+    width: 100vw;
+    background-color: rgba(188, 183, 183, 0.4);
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.banner h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+
+.banner p {
+    font-size: 1rem;
+    color: rgba(8, 1, 141, 0.42);
+}

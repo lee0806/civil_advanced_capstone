@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 // Zustand에서 만든 변수관리 스토어를 가져옴
 import useSensorStore from "../store/store";
 
+import "./SensorData.css"
 
 
 const SensorData = () => {
@@ -20,7 +21,7 @@ const SensorData = () => {
 
 
     return(
-        <>
+        <div className="sensor-container">
             <h2>📡 센서 데이터 (테스트 작업)</h2>
             
             {/* 데이터가 없는 경우 "로딩 중" 메시지 표시 */}
@@ -54,7 +55,7 @@ const SensorData = () => {
                     </tbody>
                 </table>
             )}
-        </>
+        </div>
     );
 };
 
