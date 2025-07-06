@@ -11,4 +11,4 @@ YOLOv8n 모델을 사용했습니다.
 
 React, TypeScript를 이용했습니다.
 
-.
+..
